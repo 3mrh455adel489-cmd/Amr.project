@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>أفلام تاريخية | TMovise Cinema</title>
+    
+    <!-- Font Awesome & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Roboto:wght@300;400;500;700&display=swap" />
+    <!-- MDB CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css" />
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      :root {
+        --primary-red: #e50914;
+        --red-hover: #b80710;
+        --bg-black: #0a0a0c;
+        --card-bg: #141519;
+        --text-white: #ffffff;
+        --text-gray: #a0a5b1;
+        --accent-glow: rgba(229, 9, 20, 0.4);
+      }
+      body { background-color: var(--bg-black); color: var(--text-white); font-family: 'Cairo', 'Roboto', sans-serif; overflow-x: hidden; }
+
+      /* --- تنسيق الناف بار المطابق تماماً للصفحة الرئيسية --- */
+      .navbar {
+        background-color: black !important;
+      }
+      .navbar-nav {
+        padding-right: 40px !important;
+      }
+      .nav-item {
+        padding-right: 30px !important;
+      }
+      .navbar-nav a {
+        color: white;
+        font-size: 15px;
+        font-weight: bold;
+        font-style: italic;
+        border: 2px solid red;
+        border-radius: 30px;
+        transition: all 0.3s ease;
+        display: inline-block;
+        padding: 8px 16px;
+        text-decoration: none;
+      }
+      .navbar-nav a:hover {
+        color: white;
+        border: 2px solid white;
+        background-color: black;
+      }
+      .ac, .an, .ro, .ho, .hi {
+        color: red;
+        transition: all 0.3s ease;
+      }
+      .navbar-nav a:hover .ac,
+      .navbar-nav a:hover .an,
+      .navbar-nav a:hover .ro,
+      .navbar-nav a:hover .ho,
+      .navbar-nav a:hover .hi {
+        color: white;
+      }
+      .dropdown img {
+        margin-right: 50px !important;
+        margin-left: 20px;
+      }
+      .search-box {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        max-width: 680px !important;
+        background-color: #ffffff;
+        border: 2px solid #e50914; 
+        border-radius: 25px; 
+        padding: 0px 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+      }
+      .search-box:focus-within {
+        border-color: #000000; 
+        box-shadow: 0 4px 15px rgba(229, 9, 20, 0.2);
+      }
+      .search-bar {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+      }
+      .search {
+        width: 100%;
+        padding: 6px 10px;
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: 15px;
+        color: #000000; 
+      }
+      .search::placeholder {
+        color: #888888;
+      }
+      .search-icon {
+        color: #e50914; 
+        font-size: 18px;
+        cursor: pointer;
+        padding: 5px;
+        transition: transform 0.2s ease, color 0.2s ease;
+      }
+      .search-icon:hover {
+        color: #000000; 
+        transform: scale(1.1); 
+      }
+      .collapse img {
+        margin-left: 50px;
+      }
+
+      /* تنسيق السشنز والسلايدر والكروت */
+      .movie-section { width: 100%; padding: 30px 50px; }
+      .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-right: 5px solid var(--primary-red); padding-right: 14px; }
+      .section-title { font-size: 22px; font-weight: 800; color: var(--text-white); }
+      .movie-swiper-container { position: relative; padding: 10px 25px; }
+
+      .movie-card { background: var(--card-bg); border-radius: 14px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.35s ease; cursor: pointer; }
+      .movie-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.9), 0 0 20px var(--accent-glow); border-color: rgba(229, 9, 20, 0.5); }
+      .movie-card .img-box { position: relative; width: 100%; height: 320px; overflow: hidden; }
+      .movie-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+      .movie-card:hover img { transform: scale(1.1); }
+      .rating-tag { position: absolute; top: 10px; left: 10px; background: rgba(10, 10, 12, 0.85); border: 1px solid rgba(255, 215, 0, 0.5); color: #ffd700; font-size: 12px; font-weight: bold; padding: 3px 8px; border-radius: 6px; z-index: 2; }
+      .movie-card .info { padding: 14px; }
+      .movie-card .title { font-size: 16px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 6px; }
+      .movie-card .meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-gray); }
+
+      /* أزرار Swiper التنقل */
+      .swiper-button-next, .swiper-button-prev { color: #fff; background: rgba(20, 21, 25, 0.95); border: 1px solid rgba(255, 255, 255, 0.2); width: 45px; height: 45px; border-radius: 50%; transition: all 0.3s ease; }
+      .swiper-button-next { right: -10px; }
+      .swiper-button-prev { left: -10px; }
+      .swiper-button-next:hover, .swiper-button-prev:hover { background: var(--primary-red); border-color: var(--primary-red); box-shadow: 0 0 15px var(--accent-glow); }
+      .swiper-button-next::after, .swiper-button-prev::after { font-size: 16px; font-weight: bold; }
+    </style>
+  </head>
+  <body>
+
+    <!-- Navbar الثابت -->
+    <nav class="navbar navbar-expand-lg">
+      <div class="container-fluid">
+        <button
+          data-mdb-collapse-init
+          class="navbar-toggler"
+          type="button"
+          data-mdb-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <i class="fas fa-bars" style="color: red;"></i>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <a class="navbar-brand mt-2 mt-lg-0" href="index.html">
+            <img
+              src="img/m1.jpeg"
+              height="60"
+              width="60"
+              alt="Logo"
+              loading="lazy"
+              style="border-radius: 50%; object-fit: cover;"
+            />
+          </a>
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="action.html">AC<span class="ac">TION</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="anime.html">ANI<span class="an">ME</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="romance.html">ROMA<span class="ro">NTICS</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="horror.html">HOR<span class="ho">ROR</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="historical.html">HIST<span class="hi">ORICAL</span></a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="dropdown search-bar">
+          <a
+            data-mdb-dropdown-init
+            class="dropdown-toggle d-flex align-items-center hidden-arrow"
+            href="#"
+            id="navbarDropdownMenuAvatar"
+            role="button"
+            aria-expanded="false"
+          >
+            <img 
+              src="img/m2.jfif"
+              class="rounded-circle"
+              height="60"
+              alt="Avatar"
+              loading="lazy"
+            />
+          </a>  
+          
+          <div class="search-box">
+            <input type="search" class="search" placeholder="search here">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Slider 1: الأفلام التاريخية الأكثر مشاهدة (5 عناصر) -->
+    <div class="movie-section">
+      <div class="section-header"><div class="section-title">أفلام تاريخية الأكثر مشاهدة</div></div>
+      <div class="movie-swiper-container" dir="ltr">
+        <div class="swiper category-swiper">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide"><div class="movie-card"><div class="img-box"><span class="rating-tag"><i class="fa-solid fa-star"></i> 9.0</span><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=600" alt=""></div><div class="info"><div class="title">المحارب الأخير</div><div class="meta"><span>تاريخي</span><span>2023</span></div></div></div></div>
+            <div class="swiper-slide"><div class="movie-card"><div class="img-box"><span class="rating-tag"><i class="fa-solid fa-star"></i> 8.7</span><img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=600" alt=""></div><div class="info"><div class="title">مملكة الفرسان</div><div class="meta"><span>تاريخي</span><span>2022</span></div></div></div></div>
+            <div class="swiper-slide"><div class="movie-card"><div class="img-box"><span class="rating-tag"><i class="fa-solid fa-star"></i> 8.9</span><img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=600" alt=""></div><div class="info"><div class="title">صلاح الدين الأيوبي</div><div class="meta"><span>تاريخي</span><span>2021</span></div></div></div></div>
+            <div class="swiper-slide"><div class="movie-card"><div class="img-box"><span class="rating-tag"><i class="fa-solid fa-star"></i> 8.5</span><img src="https://images.unsplash.com/photo-1511875452751-07397ea0a2b6?q=80&w=600" alt=""></div><div class="info"><div class="title">طروادة العظيمة</div><div class="meta"><span>تاريخي</span><span>2020</span></div></div></div></div>
+            <div class="swiper-slide"><div class="movie-card"><div class="img-box"><span class="rating-tag"><i class="fa-solid fa-star"></i> 8.3</span><img src="https://images.unsplash.com/photo-1563089145-599997674d42?q=80&w=600" alt=""></div><div class="info"><div class="title">عصر الإمبراطوريات</div><div class="meta"><span>تاريخي</span><span>2023</span></div></div></div></div>
+          </div>
+          <div class="swiper-button-next"></div>
+          <div class="swiper-button-prev"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slider 2: أحدث الإصدارات التاريخية (5 عناصر) -->
+    <div class="movie-section">
+      <div class="section-header"><div class="section-title">أحدث الإصدارات التاريخية</div></div>
+      <div class="movie-swiper-container" dir="ltr">
+        <div class="swiper category-swiper">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide"><div class="movie-card"><div class="img-box"><span class="rating-tag"><i class="fa-solid fa-star"></i> 8.4</span><img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=600" alt=""></div><div class="info"><div class="title">معركة الملوك</div><div class="meta"><span>تاريخي</span><span>2024</span></div></div></div></div>
+            <div class="swiper-slide"><div class="movie-card"><div class="img-box"><span class="rating-tag"><i class="fa-solid fa-star"></i> 8.1</span><img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=600" alt=""></div><div class="info"><div class="title">سقوط روما</div><div class="meta"><span>تاريخي</span><span>2024</span></div></div></div></div>
+            <div class="swiper-slide"><div class="movie-card"><div class="img-box"><span class="rating-tag"><i class="fa-solid fa-star"></i> 8.6</span><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=600" alt=""></div><div class="info"><div class="title">طريق الحرير</div><div class="meta"><span>تاريخي</span><span>2023</span></div></div></div></div>
+            <div class="swiper-slide"><div class="movie-card"><div class="img-box"><span class="rating-tag"><i class="fa-solid fa-star"></i> 7.9</span><img src="https://images.unsplash.com/photo-1563089145-599997674d42?q=80&w=600" alt=""></div><div class="info"><div class="title">الأسطورة الفايكنج</div><div class="meta"><span>تاريخي</span><span>2024</span></div></div></div></div>
+            <div class="swiper-slide"><div class="movie-card"><div class="img-box"><span class="rating-tag"><i class="fa-solid fa-star"></i> 8.2</span><img src="https://images.unsplash.com/photo-1511875452751-07397ea0a2b6?q=80&w=600" alt=""></div><div class="info"><div class="title">عهد الفاتحين</div><div class="meta"><span>تاريخي</span><span>2024</span></div></div></div></div>
+          </div>
+          <div class="swiper-button-next"></div>
+          <div class="swiper-button-prev"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slider 3: حصريات وتجميعات تاريخية (5 عناصر) -->
+    <div class="movie-section">
+      <div class="section-header"><div class="section-title">حصريات المعارك التاريخية</div></div>
+      <div class="movie-swiper-container" dir="ltr">
+        <div class="swiper category-swiper">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide"><div class="movie-card"><div class="img-box"><span class="rating-tag"><i class="fa-solid fa-star"></i> 9.1</span><img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=600" alt=""></div><div class="info"><div class="title">حروب العروش</div><div class="meta"><span>تاريخي</span><span>2024</span></div></div></div></div>
+            <div class="swiper-slide"><div class="movie-card"><div class="img-box"><span class="rating-tag"><i class="fa-solid fa-star"></i> 8.5</span><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=600" alt=""></div><div class="info"><div class="title">ملكة النيل</div><div class="meta"><span>تاريخي</span><span>2023</span></div></div></div></div>
+            <div class="swiper-slide"><div class="movie-card"><div class="img-box"><span class="rating-tag"><i class="fa-solid fa-star"></i> 8.3</span><img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=600" alt=""></div><div class="info"><div class="title">حراس البوابة</div><div class="meta"><span>تاريخي</span><span>2024</span></div></div></div></div>
+            <div class="swiper-slide"><div class="movie-card"><div class="img-box"><span class="rating-tag"><i class="fa-solid fa-star"></i> 8.0</span><img src="https://images.unsplash.com/photo-1511875452751-07397ea0a2b6?q=80&w=600" alt=""></div><div class="info"><div class="title">أسياد الصحراء</div><div class="meta"><span>تاريخي</span><span>2022</span></div></div></div></div>
+            <div class="swiper-slide"><div class="movie-card"><div class="img-box"><span class="rating-tag"><i class="fa-solid fa-star"></i> 8.8</span><img src="https://images.unsplash.com/photo-1563089145-599997674d42?q=80&w=600" alt=""></div><div class="info"><div class="title">السيف الأسطوري</div><div class="meta"><span>تاريخي</span><span>2024</span></div></div></div></div>
+          </div>
+          <div class="swiper-button-next"></div>
+          <div class="swiper-button-prev"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Swiper JS & Bootstrap Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
+
+    <script>
+      const swipers = document.querySelectorAll('.category-swiper');
+      swipers.forEach(slider => {
+        new Swiper(slider, {
+          slidesPerView: 4,
+          spaceBetween: 20,
+          loop: true,
+          navigation: {
+            nextEl: slider.querySelector('.swiper-button-next'),
+            prevEl: slider.querySelector('.swiper-button-prev'),
+          },
+          breakpoints: {
+            320: { slidesPerView: 1, spaceBetween: 10 },
+            576: { slidesPerView: 2, spaceBetween: 15 },
+            992: { slidesPerView: 3, spaceBetween: 20 },
+            1200: { slidesPerView: 4, spaceBetween: 20 }
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
